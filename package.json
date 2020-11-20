@@ -1,0 +1,19 @@
+{
+  "name": "powersdk",
+  "version": "1.0.0",
+  "description": "A work-in-progress SDK for extension developers looking to add functionality to PowerSchool Learning (formerly Haiku Learning)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zane-programs/PowerSDK.git"
+  },
+  "author": "Zane St. John",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zane-programs/PowerSDK/issues"
+  },
+  "homepage": "https://github.com/zane-programs/PowerSDK#readme"
+}
