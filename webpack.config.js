@@ -5,7 +5,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts)$/,
+        test: /\.(ts|js)$/,
         exclude: /node_modules/,
         use: [
           {
@@ -14,7 +14,30 @@ module.exports = {
               exposes: ["PowerSDK"],
             },
           },
-          { loader: "babel-loader" },
+          {
+            loader: "babel-loader",
+            // some of this may be redundant
+            options: {
+              presets: [
+                [
+                  "@babel/preset-env",
+                  {
+                    useBuiltIns: "usage",
+                    targets: {
+                      chrome: "58",
+                      ie: "11",
+                    },
+                  },
+                ],
+                "@babel/preset-typescript",
+              ],
+              plugins: [
+                "@babel/plugin-transform-async-to-generator",
+                "@babel/plugin-transform-arrow-functions",
+                "@babel/plugin-transform-modules-commonjs",
+              ],
+            },
+          },
         ],
       },
     ],

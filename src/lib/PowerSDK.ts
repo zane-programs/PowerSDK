@@ -1,23 +1,30 @@
 import PSWindow from "../interfaces/PSWindow";
 import DMenuItem from "../interfaces/DMenuItem";
 
-interface MenuLinkInfo {
+interface MenuLinkConfig {
   title: string;
   onClick?: Function;
   menuItems?: DMenuItem[];
   href?: string;
 }
 
+interface MenuLinkStorageInfo {
+  id: string; // identifier for record
+  menuLinkElem: HTMLAnchorElement;
+  dMenuElem?: HTMLDivElement;
+  // dMenuId?: string | null;
+}
+
 export default class PowerSDK {
   private psWindow: PSWindow;
-  // private psDocument: Document; // maybe create a custom interface for this, too?
+  private menuLinkStorage: MenuLinkStorageInfo[];
 
   constructor(window: PSWindow) {
     this.psWindow = window;
-    // this.psDocument = window.document;
+    this.menuLinkStorage = [];
   }
 
-  public addMenuLinkToTopBar(menuInfo: MenuLinkInfo) {
+  addMenuLinkToTopBar(menuInfo: MenuLinkConfig) {
     const dMenuIdentifier = menuInfo.menuItems
       ? PowerSDK.generateRandomIdentifier("dMenu")
       : null;
@@ -28,13 +35,41 @@ export default class PowerSDK {
       dMenuIdentifier
     );
     this.psWindow.document.querySelector(".toplinks")?.appendChild(topLinkElem);
+    let dMenuElem;
     if (dMenuIdentifier) {
-      const dMenuElem = this.createDMenu(
+      dMenuElem = this.createDMenu(
         dMenuIdentifier,
         menuInfo?.menuItems as DMenuItem[]
       );
       this.psWindow.document.querySelector(".toplinks")?.appendChild(dMenuElem);
     }
+
+    // create storage record
+    const info: MenuLinkStorageInfo = {
+      id: PowerSDK.generateRandomIdentifier("menuLink"),
+      menuLinkElem: topLinkElem,
+      dMenuElem: dMenuElem,
+      // dMenuId: dMenuIdentifier,
+    };
+
+    // add to array
+    this.menuLinkStorage.push(info);
+
+    return info.id;
+  }
+
+  removeMenuLinkFromTopBar(menuLinkStorageId: string) {
+    // find menu link item in storage
+    const storageItem = this.menuLinkStorage.find(
+      (record) => record.id === menuLinkStorageId
+    );
+    // remove elements
+    storageItem?.menuLinkElem.remove();
+    storageItem?.dMenuElem?.remove();
+    // remove from storage
+    this.menuLinkStorage = this.menuLinkStorage
+      .slice()
+      .filter((record) => record.id !== menuLinkStorageId);
   }
 
   private createDMenu(id: string, menuItems: DMenuItem[]) {
@@ -127,7 +162,8 @@ export default class PowerSDK {
 }
 
 // EXAMPLE USAGE:
-// PowerSDK.addMenuLinkToTopBar({
+// const sdk = new PowerSDK(window);
+// let menu1 = sdk.addMenuLinkToTopBar({
 //   title: "Zane's Menue",
 //   onClick: (e) => console.log("event on click", e),
 //   menuItems: [
@@ -144,3 +180,4 @@ export default class PowerSDK {
 //     },
 //   ],
 // });
+// sdk.removeMenuLinkFromTopBar(menu1); // remove by id
