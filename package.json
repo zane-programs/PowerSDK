@@ -4,7 +4,11 @@
   "description": "A work-in-progress SDK for extension developers looking to add functionality to PowerSchool Learning (formerly Haiku Learning)",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "tsc": "tsc",
+    "watch": "babel --watch src ---out-dir build --extensions '.ts,.tsx'",
+    "build-babel": "babel src --out-dir build --extensions '.ts,.tsx'",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -17,15 +21,22 @@
   },
   "homepage": "https://github.com/zane-programs/PowerSDK#readme",
   "devDependencies": {
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "@babel/preset-typescript": "^7.12.1",
+    "@babel/cli": "^7.12.7",
+    "@babel/core": "^7.12.7",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
     "@types/jest": "^26.0.15",
+    "@types/jquery": "^3.5.4",
     "babel-loader": "^8.2.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "expose-loader": "^1.0.1",
     "jest": "^26.6.3",
     "source-map-loader": "^1.1.2",
     "ts-jest": "^26.4.4",
     "ts-loader": "^8.0.11",
-    "typescript": "^4.1.2"
-  }
+    "typescript": "^4.1.2",
+    "webpack": "^5.6.0",
+    "webpack-cli": "^4.2.0"
+  },
+  "dependencies": {}
 }
